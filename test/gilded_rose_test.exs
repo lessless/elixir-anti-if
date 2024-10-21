@@ -10,6 +10,8 @@ defmodule GildedRoseTest do
   end
 
   test "backstage pass" do
-    assert_backstage_pass(22, 8, 20)
+    assert_backstage_pass_quality(22, 8, 20)
+    assert_backstage_pass_quality(23, 4, 20)
+    assert_backstage_pass_quality(0, 0, 20)
   end
 end
