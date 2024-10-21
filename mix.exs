@@ -6,6 +6,7 @@ defmodule GildedRose.Mixfile do
       app: :gilded_rose,
       version: "0.0.1",
       elixir: "~> 1.0",
+      elixirc_paths: elixirc_paths(Mix.env()),
       deps: deps(),
       test_coverage: [tool: ExCoveralls],
       preferred_cli_env: [
@@ -23,4 +24,7 @@ defmodule GildedRose.Mixfile do
       {:excoveralls, "~> 0.18", only: :test}
     ]
   end
+
+  defp elixirc_paths(:test), do: ["lib", "test/support"]
+  defp elixirc_paths(_), do: ["lib"]
 end
