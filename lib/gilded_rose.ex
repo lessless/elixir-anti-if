@@ -12,7 +12,7 @@ defmodule GildedRose do
       cond do
         !aged_brie?(item) && !backstage_pass?(item) ->
           if item.quality > 0 do
-            if item.name != "Sulfuras, Hand of Ragnaros" do
+            if !sulfuras?(item) do
               decrease_quality(item)
             else
               item
@@ -68,7 +68,7 @@ defmodule GildedRose do
 
     item =
       cond do
-        item.name != "Sulfuras, Hand of Ragnaros" ->
+        !sulfuras?(item) ->
           %{item | sell_in: item.sell_in - 1}
 
         true ->
@@ -84,7 +84,7 @@ defmodule GildedRose do
                 cond do
                   item.quality > 0 ->
                     cond do
-                      item.name != "Sulfuras, Hand of Ragnaros" ->
+                      !sulfuras?(item) ->
                         decrease_quality(item)
 
                       true ->
@@ -132,5 +132,9 @@ defmodule GildedRose do
 
   defp backstage_pass?(item) do
     item.name == "Backstage passes to a TAFKAL80ETC concert"
+  end
+
+  defp sulfuras?(item) do
+    item.name == "Sulfuras, Hand of Ragnaros"
   end
 end
