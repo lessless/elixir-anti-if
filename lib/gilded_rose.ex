@@ -13,7 +13,7 @@ defmodule GildedRose do
         item.name != "Aged Brie" && item.name != "Backstage passes to a TAFKAL80ETC concert" ->
           if item.quality > 0 do
             if item.name != "Sulfuras, Hand of Ragnaros" do
-              %{item | quality: item.quality - 1}
+              decrease_quality(item)
             else
               item
             end
@@ -24,7 +24,7 @@ defmodule GildedRose do
         true ->
           cond do
             item.quality < 50 ->
-              item = %{item | quality: item.quality + 1}
+              item = increase_quality(item)
 
               cond do
                 item.name == "Backstage passes to a TAFKAL80ETC concert" ->
@@ -33,7 +33,7 @@ defmodule GildedRose do
                       item.sell_in < 11 ->
                         cond do
                           item.quality < 50 ->
-                            %{item | quality: item.quality + 1}
+                            increase_quality(item)
 
                           true ->
                             item
@@ -47,7 +47,7 @@ defmodule GildedRose do
                     item.sell_in < 6 ->
                       cond do
                         item.quality < 50 ->
-                          %{item | quality: item.quality + 1}
+                          increase_quality(item)
 
                         true ->
                           item
@@ -85,7 +85,7 @@ defmodule GildedRose do
                   item.quality > 0 ->
                     cond do
                       item.name != "Sulfuras, Hand of Ragnaros" ->
-                        %{item | quality: item.quality - 1}
+                        decrease_quality(item)
 
                       true ->
                         item
@@ -102,7 +102,7 @@ defmodule GildedRose do
           true ->
             cond do
               item.quality < 50 ->
-                %{item | quality: item.quality + 1}
+                increase_quality(item)
 
               true ->
                 item
@@ -112,5 +112,13 @@ defmodule GildedRose do
       true ->
         item
     end
+  end
+
+  defp decrease_quality(item) do
+    %{item | quality: item.quality - 1}
+  end
+
+  defp increase_quality(item) do
+    %{item | quality: item.quality + 1}
   end
 end
