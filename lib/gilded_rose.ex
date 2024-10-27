@@ -10,7 +10,7 @@ defmodule GildedRose do
   def update_item(item) do
     item =
       cond do
-        !aged_brie?(item) && item.name != "Backstage passes to a TAFKAL80ETC concert" ->
+        !aged_brie?(item) && !backstage_pass?(item) ->
           if item.quality > 0 do
             if item.name != "Sulfuras, Hand of Ragnaros" do
               decrease_quality(item)
@@ -80,7 +80,7 @@ defmodule GildedRose do
         cond do
           !aged_brie?(item) ->
             cond do
-              item.name != "Backstage passes to a TAFKAL80ETC concert" ->
+              !backstage_pass?(item) ->
                 cond do
                   item.quality > 0 ->
                     cond do
@@ -128,5 +128,9 @@ defmodule GildedRose do
 
   defp aged_brie?(item) do
     item.name == "Aged Brie"
+  end
+
+  defp backstage_pass?(item) do
+    item.name == "Backstage passes to a TAFKAL80ETC concert"
   end
 end
