@@ -23,7 +23,7 @@ defmodule GildedRose do
 
         true ->
           cond do
-            item.quality < 50 ->
+            quality_less_than_50(item) ->
               item = increase_quality(item)
 
               cond do
@@ -32,7 +32,7 @@ defmodule GildedRose do
                     cond do
                       item.sell_in < 11 ->
                         cond do
-                          item.quality < 50 ->
+                          quality_less_than_50(item) ->
                             increase_quality(item)
 
                           true ->
@@ -46,7 +46,7 @@ defmodule GildedRose do
                   cond do
                     item.sell_in < 6 ->
                       cond do
-                        item.quality < 50 ->
+                        quality_less_than_50(item) ->
                           increase_quality(item)
 
                         true ->
@@ -101,7 +101,7 @@ defmodule GildedRose do
 
           true ->
             cond do
-              item.quality < 50 ->
+              quality_less_than_50(item) ->
                 increase_quality(item)
 
               true ->
@@ -120,5 +120,9 @@ defmodule GildedRose do
 
   defp increase_quality(item) do
     %{item | quality: item.quality + 1}
+  end
+
+  defp quality_less_than_50(item) do
+    item.quality < 50
   end
 end
