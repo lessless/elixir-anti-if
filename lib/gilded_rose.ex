@@ -26,35 +26,8 @@ defmodule GildedRose do
               item = increase_quality(item)
 
               cond do
-                item.name == "Backstage passes to a TAFKAL80ETC concert" ->
-                  item =
-                    cond do
-                      item.sell_in < 11 ->
-                        cond do
-                          quality_less_than_50(item) ->
-                            increase_quality(item)
-
-                          true ->
-                            item
-                        end
-
-                      true ->
-                        item
-                    end
-
-                  cond do
-                    item.sell_in < 6 ->
-                      cond do
-                        quality_less_than_50(item) ->
-                          increase_quality(item)
-
-                        true ->
-                          item
-                      end
-
-                    true ->
-                      item
-                  end
+                backstage_pass?(item) ->
+                  handle_backstage_pass(item)
 
                 true ->
                   item
@@ -139,5 +112,36 @@ defmodule GildedRose do
 
   defp backstage_pass?(item) do
     item.name == "Backstage passes to a TAFKAL80ETC concert"
+  end
+
+  defp handle_backstage_pass(item) do
+    item =
+      cond do
+        item.sell_in < 11 ->
+          cond do
+            quality_less_than_50(item) ->
+              increase_quality(item)
+
+            true ->
+              item
+          end
+
+        true ->
+          item
+      end
+
+    cond do
+      item.sell_in < 6 ->
+        cond do
+          quality_less_than_50(item) ->
+            increase_quality(item)
+
+          true ->
+            item
+        end
+
+      true ->
+        item
+    end
   end
 end
