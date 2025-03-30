@@ -15,11 +15,7 @@ defmodule GildedRose do
 
         generic?(item) ->
           if item.quality > 0 do
-            if !sulfuras?(item) do
-              decrease_quality(item)
-            else
-              item
-            end
+            decrease_quality(item)
           else
             item
           end
