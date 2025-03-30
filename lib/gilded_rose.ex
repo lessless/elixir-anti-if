@@ -10,7 +10,10 @@ defmodule GildedRose do
   def update_item(item) do
     item =
       cond do
-        !aged_brie?(item) && !backstage_pass?(item) ->
+        sulfuras?(item) ->
+          item
+
+        generic?(item) ->
           if item.quality > 0 do
             if !sulfuras?(item) do
               decrease_quality(item)
@@ -126,15 +129,19 @@ defmodule GildedRose do
     item.quality < 50
   end
 
+  def generic?(item) do
+    !(sulfuras?(item) or backstage_pass?(item) or aged_brie?(item))
+  end
+
+  defp sulfuras?(item) do
+    item.name == "Sulfuras, Hand of Ragnaros"
+  end
+
   defp aged_brie?(item) do
     item.name == "Aged Brie"
   end
 
   defp backstage_pass?(item) do
     item.name == "Backstage passes to a TAFKAL80ETC concert"
-  end
-
-  defp sulfuras?(item) do
-    item.name == "Sulfuras, Hand of Ragnaros"
   end
 end
