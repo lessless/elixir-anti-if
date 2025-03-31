@@ -44,7 +44,10 @@ defmodule GildedRose do
         cond do
           !aged_brie?(item) ->
             cond do
-              !backstage_pass?(item) ->
+              backstage_pass?(item) ->
+                %{item | quality: item.quality - item.quality}
+
+              true ->
                 cond do
                   item.quality > 0 ->
                     cond do
@@ -58,9 +61,6 @@ defmodule GildedRose do
                   true ->
                     item
                 end
-
-              true ->
-                %{item | quality: item.quality - item.quality}
             end
 
           true ->
