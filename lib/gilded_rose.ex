@@ -42,7 +42,16 @@ defmodule GildedRose do
     cond do
       item.sell_in < 0 ->
         cond do
-          !aged_brie?(item) ->
+          aged_brie?(item) ->
+            cond do
+              quality_less_than_50(item) ->
+                increase_quality(item)
+
+              true ->
+                item
+            end
+
+          true ->
             cond do
               backstage_pass?(item) ->
                 %{item | quality: item.quality - item.quality}
@@ -61,15 +70,6 @@ defmodule GildedRose do
                   true ->
                     item
                 end
-            end
-
-          true ->
-            cond do
-              quality_less_than_50(item) ->
-                increase_quality(item)
-
-              true ->
-                item
             end
         end
 
