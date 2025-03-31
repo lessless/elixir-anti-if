@@ -14,32 +14,29 @@ defmodule GildedRose do
           item
 
         generic?(item) ->
-          if item.quality > 0 do
-            decrease_quality(item)
-          else
-            item
-          end
+          item =
+            if item.quality > 0 do
+              decrease_quality(item)
+            else
+              item
+            end
+
+          %{item | sell_in: item.sell_in - 1}
 
         aged_brie?(item) ->
-          cond do
-            quality_less_than_50(item) ->
-              increase_quality(item)
+          item =
+            cond do
+              quality_less_than_50(item) ->
+                increase_quality(item)
 
-            true ->
-              item
-          end
+              true ->
+                item
+            end
+
+          %{item | sell_in: item.sell_in - 1}
 
         backstage_pass?(item) ->
           handle_backstage_pass(item)
-      end
-
-    item =
-      cond do
-        !sulfuras?(item) ->
-          %{item | sell_in: item.sell_in - 1}
-
-        true ->
-          item
       end
 
     cond do
@@ -110,13 +107,28 @@ defmodule GildedRose do
   end
 
   defp handle_backstage_pass(item) do
-    cond do
-      quality_less_than_50(item) ->
-        item = increase_quality(item)
+    item =
+      cond do
+        quality_less_than_50(item) ->
+          item = increase_quality(item)
 
-        item =
+          item =
+            cond do
+              item.sell_in < 11 ->
+                cond do
+                  quality_less_than_50(item) ->
+                    increase_quality(item)
+
+                  true ->
+                    item
+                end
+
+              true ->
+                item
+            end
+
           cond do
-            item.sell_in < 11 ->
+            item.sell_in < 6 ->
               cond do
                 quality_less_than_50(item) ->
                   increase_quality(item)
@@ -129,22 +141,10 @@ defmodule GildedRose do
               item
           end
 
-        cond do
-          item.sell_in < 6 ->
-            cond do
-              quality_less_than_50(item) ->
-                increase_quality(item)
+        true ->
+          item
+      end
 
-              true ->
-                item
-            end
-
-          true ->
-            item
-        end
-
-      true ->
-        item
-    end
+    %{item | sell_in: item.sell_in - 1}
   end
 end
